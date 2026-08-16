@@ -1,0 +1,8 @@
+.git
+.gitignore
+CLAUDE.md
+node_modules
+.DS_Store
+.wrangler
+wrangler.jsonc
+ibiza-guide-v3*.html
