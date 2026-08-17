@@ -41,6 +41,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .sf-group{margin-bottom:8px}
 .sf-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);display:block;margin-bottom:5px}
 .tab-map{height:280px;border-radius:14px;overflow:hidden;margin-bottom:12px;background:var(--sand);border:1px solid var(--border)}
+.itn-map{height:170px;border-radius:12px;overflow:hidden;margin:0 12px 12px;background:var(--sand);border:1px solid var(--border)}
+.slot-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;margin-right:6px;vertical-align:middle;flex-shrink:0}
 /* Cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:box-shadow .2s}
 .card.open{box-shadow:0 2px 12px rgba(0,0,0,.07)}
@@ -477,16 +479,18 @@ function renderSights(f) {
 function renderPlan() {
   let h = `<div class="summary" style="margin-bottom:12px">Six suggested day shapes — tap any underlined item to jump to the full entry in the relevant tab. Mix and match freely; these are starting points.</div>`;
   ITINS.forEach((it, idx) => {
+    let locIdx = 0;
     const slotsHtml = it.slots.map((sl,i) => {
+      const numBadge = (sl.tab && sl.id) ? `<span class="slot-num">${++locIdx}</span>` : '';
       const nm = sl.tab
         ? `<span class="slot-name slot-link" onclick="goTo('${sl.tab}','${sl.id}')">${sl.nm}</span>`
         : `<span class="slot-name">${sl.nm}</span>`;
       const border = i < it.slots.length-1 ? '' : 'border:none;padding-bottom:0';
-      return `<div class="slot" style="${border}"><div class="slot-time">${sl.time}</div><div>${nm}</div></div>`;
+      return `<div class="slot" style="${border}"><div class="slot-time">${sl.time}</div><div>${numBadge}${nm}</div></div>`;
     }).join('');
     const wlBtn = `<button id="wl-itn-${it.id}" class="cl cl-wl" onclick="copyWLLink('plan','itn-${it.id}')"><i class="ti ti-link"></i> Copy link for Wanderlog</button>`;
     h += `<div class="card" id="itn-${it.id}">
-      <div class="card-hdr" onclick="toggleCard('itn-${it.id}')">
+      <div class="card-hdr" onclick="toggleItinCard('itn-${it.id}')">
         <div class="ex"><div class="ex-c">${idx+1}</div><span class="ex-arr"></span></div>
         <div class="card-meta">
           <div class="card-name">${it.title}</div>
@@ -495,6 +499,7 @@ function renderPlan() {
       </div>
       <div class="card-body" style="height:0;overflow:hidden;transition:height .32s ease">
         <div class="card-divider"></div>
+        <div class="itn-map" id="itn-map-${it.id}"></div>
         <div class="itn-slots">${slotsHtml}</div>
         <div style="padding:0 12px 14px 56px"><div class="card-links">${wlBtn}</div></div>
       </div>
@@ -603,6 +608,60 @@ function initTabMap(tab) {
     marker.addListener('click', () => openMapMarker(tab, r.id));
   });
   addVillaMarker(map);
+}
+
+// ── Plan day maps ─────────────────────────────────────────────────────────────
+
+const itinMaps = {};
+
+function findMapEntry(tab, id) {
+  const src = MAP_DATA[tab];
+  if (!src) return null;
+  return src().find(r => r.id === id) || null;
+}
+
+function toggleItinCard(id) {
+  toggleCard(id);
+  const card = document.getElementById(id);
+  if (card && card.classList.contains('open')) {
+    initItinMap(id.replace('itn-', ''));
+  }
+}
+
+function initItinMap(itId) {
+  if (itinMaps[itId] || !gmapsReady) return;
+  const el = document.getElementById('itn-map-' + itId);
+  const it = ITINS.find(x => x.id === itId);
+  if (!el || !it) return;
+  const map = new google.maps.Map(el, {
+    center: {lat: VILLA.lat, lng: VILLA.lng},
+    zoom: 12,
+    streetViewControl: false,
+    fullscreenControl: false,
+    mapTypeControl: false,
+    styles: [{featureType: 'poi', stylers: [{visibility: 'off'}]}],
+  });
+  itinMaps[itId] = map;
+  const bounds = new google.maps.LatLngBounds();
+  bounds.extend({lat: VILLA.lat, lng: VILLA.lng});
+  let n = 0;
+  it.slots.forEach(sl => {
+    if (!sl.tab || !sl.id) return;
+    const entry = findMapEntry(sl.tab, sl.id);
+    if (!entry || entry.lat == null || entry.lng == null) return;
+    n++;
+    const pos = {lat: entry.lat, lng: entry.lng};
+    bounds.extend(pos);
+    const marker = new google.maps.Marker({
+      position: pos,
+      map: map,
+      icon: tabMarkerIcon(n),
+      title: sl.nm,
+    });
+    marker.addListener('click', () => openMapMarker(sl.tab, sl.id));
+  });
+  addVillaMarker(map);
+  if (n > 0) map.fitBounds(bounds, 24);
 }
 
 function goTo(tab, id) {
