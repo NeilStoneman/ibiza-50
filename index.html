@@ -514,8 +514,11 @@ function showTab(id, btn) {
 
 // ── Tab overview maps ─────────────────────────────────────────────────────────
 
+const VILLA = {lat:38.97397745311785, lng:1.3759623238934402, nm:"The villa", address:"Diseminado Sa Bassa Roja, 111, 07820 Sant Rafel de Forca, Illes Balears, Spain"};
+
 let gmapsReady = false;
 let lastShownTab = 'clubs';
+let villaInfoWin = null;
 const tabMaps = {};
 const MAP_DATA = {clubs:() => CLUBS, eat:() => EATS, walks:() => WALKS, shops:() => SHOPS, sights:() => SIGHTS};
 
@@ -531,6 +534,35 @@ function tabMarkerIcon(n) {
     scaledSize: new google.maps.Size(30, 30),
     anchor: new google.maps.Point(15, 15),
   };
+}
+
+function villaMarkerIcon() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+    <circle cx="18" cy="18" r="16" fill="#B8722C" stroke="#fff" stroke-width="2.5"/>
+    <path d="M18 9L28 17.5V27H21.5V20H14.5V27H8V17.5L18 9Z" fill="#fff"/>
+  </svg>`;
+  return {
+    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(36, 36),
+    anchor: new google.maps.Point(18, 18),
+  };
+}
+
+function addVillaMarker(map) {
+  const marker = new google.maps.Marker({
+    position: {lat: VILLA.lat, lng: VILLA.lng},
+    map: map,
+    icon: villaMarkerIcon(),
+    title: VILLA.nm,
+    zIndex: 999,
+  });
+  marker.addListener('click', () => {
+    if (villaInfoWin) villaInfoWin.close();
+    villaInfoWin = new google.maps.InfoWindow({
+      content: `<div style="font:13px -apple-system,sans-serif;padding:2px 4px"><strong>${VILLA.nm}</strong><br>${VILLA.address}</div>`,
+    });
+    villaInfoWin.open(map, marker);
+  });
 }
 
 function openMapMarker(tab, id) {
@@ -568,6 +600,7 @@ function initTabMap(tab) {
     });
     marker.addListener('click', () => openMapMarker(tab, r.id));
   });
+  addVillaMarker(map);
 }
 
 function goTo(tab, id) {
