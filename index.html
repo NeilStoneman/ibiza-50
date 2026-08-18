@@ -87,8 +87,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cl-at{background:var(--grnbg);color:var(--green);border-color:var(--grnbd)}
 .cl-wl{background:var(--sand);color:var(--sec);border-color:var(--border);transition:all .2s}
 .cl-wl.copied{background:var(--grnbg);color:var(--green);border-color:var(--grnbd)}
-.cl-icon{padding:6px 8px}
-.cl-icon i{font-size:14px}
+.cl-wl.cl-icon{background:transparent;border-color:transparent;color:var(--sec);padding:4px 6px}
+.cl-wl.cl-icon:hover{color:var(--text)}
+.cl-wl.cl-icon.copied{background:transparent;border-color:transparent;color:var(--green)}
+.cl-icon i{font-size:16px}
 /* Itineraries */
 .itn-slots{padding:0 12px 14px 43px}
 .slot{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #F0E8D8}
