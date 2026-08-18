@@ -121,12 +121,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 .ex{display:flex;flex-direction:column;align-items:center;flex-shrink:0;user-select:none;align-self:stretch}
 .ex-c{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);transition:all .25s;line-height:1}
-.ex-arr{width:11px;height:11px;border-right:2px solid var(--border);border-bottom:2px solid var(--border);transform:rotate(45deg);transition:transform .3s ease;margin-top:auto;margin-bottom:6px;flex-shrink:0}
+.ex-arr{font-size:13px;color:var(--border);transition:transform .3s ease;margin-top:auto;margin-bottom:6px;flex-shrink:0;line-height:1}
 .card-hdr:hover .ex-c{border-color:var(--accent);color:var(--accent)}
 
 
 .card.open .ex-c{background:var(--accent);border-color:var(--accent);color:#fff}
-.card.open .ex-arr{transform:rotate(-135deg)}
+.card.open .ex-arr{transform:rotate(180deg)}
 
 .cl-web{background:#F5F0E8;color:var(--sec);border:1px solid var(--border)}
 .cl-web:hover{color:var(--text)}
@@ -390,7 +390,7 @@ function renderCard(r, cat, extraBody='', num='') {
 
   return `<div class="card" id="${r.id}">
     <div class="card-hdr" onclick="toggleCard('${r.id}')">
-      <div class="ex"><div class="ex-c">${num}</div><span class="ex-arr"></span></div>
+      <div class="ex"><div class="ex-c">${num}</div><i class="ti ti-chevron-down ex-arr"></i></div>
       <div class="card-meta">
         <div class="card-top">
           <span class="card-name">${r.nm}</span>
@@ -496,7 +496,7 @@ function renderPlan() {
     }).join('');
     h += `<div class="card" id="itn-${it.id}">
       <div class="card-hdr" onclick="toggleItinCard('itn-${it.id}')">
-        <div class="ex"><div class="ex-c">${idx+1}</div><span class="ex-arr"></span></div>
+        <div class="ex"><div class="ex-c">${idx+1}</div><i class="ti ti-chevron-down ex-arr"></i></div>
         <div class="card-meta">
           <div class="card-name">${it.title}</div>
           <div class="card-sub">${it.theme}</div>
