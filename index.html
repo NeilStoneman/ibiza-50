@@ -40,7 +40,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .sf-btn.on{background:var(--acbg);color:var(--accent);border-color:var(--acbd)}
 .sf-group{margin-bottom:8px}
 .sf-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);display:block;margin-bottom:5px}
-.tab-map{height:280px;border-radius:14px;overflow:hidden;margin-bottom:12px;background:var(--sand);border:1px solid var(--border)}
+.tab-map{height:65vh;border-radius:14px;overflow:hidden;background:var(--sand);border:1px solid var(--border)}
+.tab-split{display:flex;gap:14px;align-items:flex-start}
+.tab-map-col{width:42%;flex-shrink:0;position:sticky;top:calc(var(--tabbar-h, 44px) + 10px)}
+.tab-list-col{flex:1;min-width:0}
 .itn-map{height:170px;border-radius:12px;overflow:hidden;margin:0 12px 12px;background:var(--sand);border:1px solid var(--border)}
 /* Overview map */
 .mv-filters{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
@@ -163,10 +166,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <button class="tab-btn" data-tab="shops" onclick="showTab('shops',this)"><i class="ti ti-shopping-bag"></i> Shops</button>
 </nav>
 
-<div id="clubs" class="pane on"><div id="clubs-map" class="tab-map"></div><div id="clubs-list"></div></div>
-<div id="eat"   class="pane"><div id="eat-map" class="tab-map"></div><div id="eat-list"></div></div>
-<div id="walks" class="pane"><div id="walks-map" class="tab-map"></div><div id="walks-list"></div></div>
-<div id="sights" class="pane"><div id="sights-map" class="tab-map"></div><div id="sights-list"></div></div>
+<div id="clubs" class="pane on"><div class="tab-split"><div class="tab-map-col"><div id="clubs-map" class="tab-map"></div></div><div class="tab-list-col" id="clubs-list"></div></div></div>
+<div id="eat"   class="pane"><div class="tab-split"><div class="tab-map-col"><div id="eat-map" class="tab-map"></div></div><div class="tab-list-col" id="eat-list"></div></div></div>
+<div id="walks" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="walks-map" class="tab-map"></div></div><div class="tab-list-col" id="walks-list"></div></div></div>
+<div id="sights" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="sights-map" class="tab-map"></div></div><div class="tab-list-col" id="sights-list"></div></div></div>
 <div id="mapview" class="pane">
   <div class="mv-filters" id="mv-filters"></div>
   <div class="mv-split">
@@ -175,7 +178,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 <div id="plan"  class="pane"></div>
-<div id="shops" class="pane"><div id="shops-map" class="tab-map"></div><div id="shops-list"></div></div>
+<div id="shops" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="shops-map" class="tab-map"></div></div><div class="tab-list-col" id="shops-list"></div></div></div>
 
 <script>
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -814,12 +817,19 @@ function goTo(tab, id) {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
+function setTabbarHeight() {
+  const bar = document.querySelector('.tab-bar');
+  if (bar) document.documentElement.style.setProperty('--tabbar-h', bar.offsetHeight + 'px');
+}
+
 renderClubs();
 renderEats();
 renderWalks();
 renderShops();
 renderSights('all');
 renderPlan();
+setTabbarHeight();
+window.addEventListener('resize', setTabbarHeight);
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdLpBtavnzfsbNPIsBgXInzUMRnhhDi9Q&callback=onGMapsReady"></script>
 </body>
