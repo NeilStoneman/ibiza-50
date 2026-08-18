@@ -310,7 +310,7 @@ const ITINS=[
 
 // ── Expand/collapse ───────────────────────────────────────────────────────────
 
-function toggleCard(id) {
+function toggleCard(id, cat) {
   const card = document.getElementById(id);
   const body = card.querySelector('.card-body');
   if (card.classList.contains('open')) {
@@ -321,7 +321,18 @@ function toggleCard(id) {
     card.classList.add('open');
     body.style.height = body.scrollHeight + 'px';
     body.addEventListener('transitionend', () => { body.style.height = 'auto'; }, {once:true});
+    if (cat) centerTabMapOn(cat, id);
   }
+}
+
+function centerTabMapOn(tab, id) {
+  const map = tabMaps[tab];
+  const markers = tabMarkers[tab];
+  if (!map || !markers) return;
+  const found = markers.find(m => m.id === id);
+  if (!found) return;
+  map.panTo(found.marker.getPosition());
+  map.setZoom(14);
 }
 
 function expandCard(id) {
@@ -441,7 +452,7 @@ function renderCard(r, cat, extraBody='', num='') {
   const atBtn = (cat==='walks' && r.alltrails) ? `<a class="cl cl-at" href="${r.alltrails}" target="_blank"><i class="ti ti-route"></i> AllTrails</a>` : '';
 
   return `<div class="card" id="${r.id}">
-    <div class="card-hdr" onclick="toggleCard('${r.id}')">
+    <div class="card-hdr" onclick="toggleCard('${r.id}','${cat}')">
       <div class="ex"><div class="ex-c">${num}</div><i class="ti ti-chevron-down ex-arr"></i></div>
       <div class="card-meta">
         <div class="card-top">
