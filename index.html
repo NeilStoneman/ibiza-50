@@ -169,26 +169,26 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 </div>
 
 <nav class="tab-bar">
-  <button class="tab-btn on" data-tab="clubs" onclick="showTab('clubs',this)"><i class="ti ti-music"></i> Clubs</button>
+  <button class="tab-btn on" data-tab="mapview" onclick="showTab('mapview',this)"><i class="ti ti-map-2"></i> Map</button>
+  <button class="tab-btn" data-tab="clubs" onclick="showTab('clubs',this)"><i class="ti ti-music"></i> Clubs</button>
   <button class="tab-btn" data-tab="eat"   onclick="showTab('eat',this)"><i class="ti ti-tools-kitchen-2"></i> Eat</button>
   <button class="tab-btn" data-tab="walks" onclick="showTab('walks',this)"><i class="ti ti-route"></i> Walks</button>
   <button class="tab-btn" data-tab="sights" onclick="showTab('sights',this)"><i class="ti ti-binoculars"></i> Sights</button>
-  <button class="tab-btn" data-tab="mapview" onclick="showTab('mapview',this)"><i class="ti ti-map-2"></i> Map</button>
   <button class="tab-btn" data-tab="plan"  onclick="showTab('plan',this)"><i class="ti ti-calendar"></i> Plan</button>
   <button class="tab-btn" data-tab="shops" onclick="showTab('shops',this)"><i class="ti ti-shopping-bag"></i> Shops</button>
 </nav>
 
-<div id="clubs" class="pane on"><div class="tab-split"><div class="tab-map-col"><div id="clubs-map" class="tab-map"></div></div><div class="tab-list-col" id="clubs-list"></div></div></div>
-<div id="eat"   class="pane"><div class="tab-split"><div class="tab-map-col"><div id="eat-map" class="tab-map"></div></div><div class="tab-list-col" id="eat-list"></div></div></div>
-<div id="walks" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="walks-map" class="tab-map"></div></div><div class="tab-list-col" id="walks-list"></div></div></div>
-<div id="sights" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="sights-map" class="tab-map"></div></div><div class="tab-list-col" id="sights-list"></div></div></div>
-<div id="mapview" class="pane">
+<div id="mapview" class="pane on">
   <div class="mv-filters" id="mv-filters"></div>
   <div class="mv-split">
     <div class="mv-map" id="mv-map"></div>
     <div class="mv-info" id="mv-info"><div class="mv-info-empty">Tap a pin on the map to see details here</div></div>
   </div>
 </div>
+<div id="clubs" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="clubs-map" class="tab-map"></div></div><div class="tab-list-col" id="clubs-list"></div></div></div>
+<div id="eat"   class="pane"><div class="tab-split"><div class="tab-map-col"><div id="eat-map" class="tab-map"></div></div><div class="tab-list-col" id="eat-list"></div></div></div>
+<div id="walks" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="walks-map" class="tab-map"></div></div><div class="tab-list-col" id="walks-list"></div></div></div>
+<div id="sights" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="sights-map" class="tab-map"></div></div><div class="tab-list-col" id="sights-list"></div></div></div>
 <div id="plan"  class="pane"></div>
 <div id="shops" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="shops-map" class="tab-map"></div></div><div class="tab-list-col" id="shops-list"></div></div></div>
 
@@ -581,7 +581,7 @@ function showTab(id, btn) {
 const VILLA = {lat:38.97397745311785, lng:1.3759623238934402, nm:"The villa", address:"Diseminado Sa Bassa Roja, 111, 07820 Sant Rafel de Forca, Illes Balears, Spain"};
 
 let gmapsReady = false;
-let lastShownTab = 'clubs';
+let lastShownTab = 'mapview';
 let villaInfoWin = null;
 const tabMaps = {};
 const MAP_DATA = {clubs:() => CLUBS, eat:() => EATS, walks:() => WALKS, shops:() => SHOPS, sights:() => SIGHTS};
