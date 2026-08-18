@@ -306,6 +306,37 @@ const ITINS=[
     {time:"Lunch",tab:null,nm:"Beach chiringuito lunch on Formentera"},
     {time:"Evening",tab:null,nm:"Ferry back — easy dinner near the port"},
   ]},
+  {id:"thu-sep3",title:"Thu Sep 3 — Pacha",theme:"Purple Disco Machine's Thursday residency — a strong, easy opening night with nothing to plan around",slots:[
+    {time:"Morning",tab:"walks",id:"w-puntagalera",nm:"Punta Galera walk & swim"},
+    {time:"Afternoon",tab:null,nm:"Villa pool — settle in before the first big night"},
+    {time:"Dinner",tab:"eat",id:"e-canpilot",nm:"Can Pilot — your local"},
+    {time:"Night",tab:"clubs",id:"c-pacha",nm:"Pacha — Purple Disco Machine (Thursday residency)"},
+  ]},
+  {id:"sat-sep5",title:"Sat Sep 5 — Las Dalias & Pacha",theme:"Saturday hippy market by day, Flower Power by night — the single strongest club recommendation of the trip",slots:[
+    {time:"Morning",tab:"sights",id:"g-lasdaliasmarket",nm:"Las Dalias Hippy Market — Saturdays only"},
+    {time:"Afternoon",tab:null,nm:"Villa pool or a quick beach — save energy for tonight"},
+    {time:"Dinner",tab:"eat",id:"e-escantonet",nm:"Es Cantonet — cheap menú del día before Ibiza Town"},
+    {time:"Night",tab:"clubs",id:"c-pacha",nm:"Pacha — Flower Power (Roger Sanchez)"},
+  ]},
+  {id:"sun-sep6",title:"Sun Sep 6 — sunset decision",theme:"Three unmissable things clash tonight — Cala Benirràs drum circles, Solomun +1 at Pacha, and Pantheøn at Cova Santa. Pick one",slots:[
+    {time:"Morning",tab:"sights",id:"g-sessalines",nm:"Ses Salines natural park — easy, any time"},
+    {time:"Afternoon",tab:null,nm:"Villa pool — rest before tonight's decision"},
+    {time:"Sunset (option 1)",tab:"clubs",id:"c-benirras",nm:"Cala Benirràs drum circles — free, the flagship Sunday experience"},
+    {time:"Alternative (option 2)",tab:"clubs",id:"c-pacha",nm:"...or Pacha — Solomun +1 (skip the drum circles if you go this way)"},
+    {time:"Alternative (option 3)",tab:"clubs",id:"c-covasanta",nm:"...or Cova Santa — Pantheøn (skip both of the above if you go this way)"},
+  ]},
+  {id:"mon-sep7",title:"Mon Sep 7 — Pacha",theme:"Sonny Fodera's Monday night — skip Can Mimosa today, it's closed Mondays",slots:[
+    {time:"Morning",tab:"sights",id:"g-calabassa",nm:"Cala Bassa — relaxed beach morning"},
+    {time:"Afternoon",tab:null,nm:"Villa pool or rest"},
+    {time:"Dinner",tab:"eat",id:"e-elzaguan",nm:"El Zaguán — pintxos in Ibiza Town before Pacha"},
+    {time:"Night",tab:"clubs",id:"c-pacha",nm:"Pacha — Sonny Fodera"},
+  ]},
+  {id:"tue-sep8",title:"Tue Sep 8 — Benirràs & Cova Santa",theme:"Tuesday hippie market into a possible late one at Cova Santa (PIV — verify it's running this date). Skip Bar Costa and Can Cosmi today, both closed Tuesdays",slots:[
+    {time:"Morning",tab:"walks",id:"w-satalaia",nm:"Sa Talaia summit — early start"},
+    {time:"Afternoon",tab:null,nm:"Villa pool — rest before a two-part evening"},
+    {time:"Sunset",tab:"clubs",id:"c-benirras",nm:"Cala Benirràs — Tuesday hippie market"},
+    {time:"Late night",tab:"clubs",id:"c-covasanta",nm:"Cova Santa — PIV, if confirmed running this date"},
+  ]},
 ];
 
 // ── Expand/collapse ───────────────────────────────────────────────────────────
@@ -548,7 +579,7 @@ function renderSights(f) {
 }
 
 function renderPlan() {
-  let h = `<div class="summary" style="margin-bottom:12px">Six suggested day shapes — tap any underlined item to jump to the full entry in the relevant tab. Mix and match freely; these are starting points.</div>`;
+  let h = `<div class="summary" style="margin-bottom:12px">Suggested day shapes — tap any underlined item to jump to the full entry in the relevant tab. The dated ones (Thu Sep 3 – Tue Sep 8) are built around that specific day's club night and closures; the rest are flexible and can go on any day. Mix and match freely.</div>`;
   ITINS.forEach((it, idx) => {
     let locIdx = 0;
     const slotsHtml = it.slots.map((sl,i) => {
