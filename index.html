@@ -332,7 +332,7 @@ function centerTabMapOn(tab, id) {
   const found = markers.find(m => m.id === id);
   if (!found) return;
   map.panTo(found.marker.getPosition());
-  map.setZoom(14);
+  map.setZoom(13);
 }
 
 function expandCard(id) {
