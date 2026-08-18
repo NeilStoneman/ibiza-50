@@ -42,6 +42,17 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .sf-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);display:block;margin-bottom:5px}
 .tab-map{height:280px;border-radius:14px;overflow:hidden;margin-bottom:12px;background:var(--sand);border:1px solid var(--border)}
 .itn-map{height:170px;border-radius:12px;overflow:hidden;margin:0 12px 12px;background:var(--sand);border:1px solid var(--border)}
+/* Overview map */
+.mv-filters{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
+.mv-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
+.mv-chip.off{opacity:.35}
+.mv-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.mv-split{display:flex;flex-direction:column}
+.mv-map{height:50vh;background:var(--sand);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.mv-info{height:50vh;overflow-y:auto;padding:14px}
+.mv-info-empty{color:var(--muted);font-size:13px;text-align:center;padding:40px 20px}
+.mv-info-hdr{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
+.mv-info-hdr .mv-dot{width:11px;height:11px;margin-top:5px}
 .slot-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;margin-right:6px;vertical-align:middle;flex-shrink:0}
 /* Cards */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;transition:box-shadow .2s}
@@ -147,6 +158,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <button class="tab-btn" data-tab="eat"   onclick="showTab('eat',this)"><i class="ti ti-tools-kitchen-2"></i> Eat</button>
   <button class="tab-btn" data-tab="walks" onclick="showTab('walks',this)"><i class="ti ti-route"></i> Walks</button>
   <button class="tab-btn" data-tab="sights" onclick="showTab('sights',this)"><i class="ti ti-binoculars"></i> Sights</button>
+  <button class="tab-btn" data-tab="mapview" onclick="showTab('mapview',this)"><i class="ti ti-map-2"></i> Map</button>
   <button class="tab-btn" data-tab="plan"  onclick="showTab('plan',this)"><i class="ti ti-calendar"></i> Plan</button>
   <button class="tab-btn" data-tab="shops" onclick="showTab('shops',this)"><i class="ti ti-shopping-bag"></i> Shops</button>
 </nav>
@@ -155,6 +167,13 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <div id="eat"   class="pane"><div id="eat-map" class="tab-map"></div><div id="eat-list"></div></div>
 <div id="walks" class="pane"><div id="walks-map" class="tab-map"></div><div id="walks-list"></div></div>
 <div id="sights" class="pane"><div id="sights-map" class="tab-map"></div><div id="sights-list"></div></div>
+<div id="mapview" class="pane">
+  <div class="mv-filters" id="mv-filters"></div>
+  <div class="mv-split">
+    <div class="mv-map" id="mv-map"></div>
+    <div class="mv-info" id="mv-info"><div class="mv-info-empty">Tap a pin on the map to see details here</div></div>
+  </div>
+</div>
 <div id="plan"  class="pane"></div>
 <div id="shops" class="pane"><div id="shops-map" class="tab-map"></div><div id="shops-list"></div></div>
 
@@ -539,6 +558,7 @@ function showTab(id, btn) {
   btn.classList.add('on');
   window.scrollTo(0, 0);
   initTabMap(id);
+  if (id === 'mapview') initOverviewMap();
 }
 
 // ── Tab overview maps ─────────────────────────────────────────────────────────
@@ -551,7 +571,11 @@ let villaInfoWin = null;
 const tabMaps = {};
 const MAP_DATA = {clubs:() => CLUBS, eat:() => EATS, walks:() => WALKS, shops:() => SHOPS, sights:() => SIGHTS};
 
-function onGMapsReady() { gmapsReady = true; initTabMap(lastShownTab); }
+function onGMapsReady() {
+  gmapsReady = true;
+  initTabMap(lastShownTab);
+  if (lastShownTab === 'mapview') initOverviewMap();
+}
 
 function tabMarkerIcon(n) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30">
@@ -603,6 +627,94 @@ function openMapMarker(tab, id) {
     renderSights('all');
   }
   goTo(tab, id);
+}
+
+// ── Overview map (all tabs combined) ────────────────────────────────────────────
+
+const OVERVIEW_CATS = [
+  {key:'clubs', label:'Clubs', color:'#7C3AED', src:() => CLUBS},
+  {key:'eat', label:'Eat', color:'#EA580C', src:() => EATS},
+  {key:'walks', label:'Walks', color:'#16A34A', src:() => WALKS},
+  {key:'sights', label:'Sights', color:'#2563EB', src:() => SIGHTS},
+  {key:'shops', label:'Shops', color:'#64748B', src:() => SHOPS},
+];
+let overviewMap = null;
+let overviewMarkers = [];
+const overviewFilters = {clubs:true, eat:true, walks:true, sights:true, shops:true};
+
+function catMarkerIcon(n, color) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+    <circle cx="14" cy="14" r="12" fill="${color}" stroke="#fff" stroke-width="2"/>
+    <text x="14" y="14" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#fff">${n}</text>
+  </svg>`;
+  return {
+    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    scaledSize: new google.maps.Size(28, 28),
+    anchor: new google.maps.Point(14, 14),
+  };
+}
+
+function renderOverviewFilters() {
+  const el = document.getElementById('mv-filters');
+  if (!el) return;
+  el.innerHTML = OVERVIEW_CATS.map(c =>
+    `<span class="mv-chip${overviewFilters[c.key] ? '' : ' off'}" onclick="toggleOverviewFilter('${c.key}')"><span class="mv-dot" style="background:${c.color}"></span>${c.label}</span>`
+  ).join('');
+}
+
+function toggleOverviewFilter(key) {
+  overviewFilters[key] = !overviewFilters[key];
+  renderOverviewFilters();
+  overviewMarkers.forEach(m => {
+    if (m.cat === key) m.marker.setMap(overviewFilters[key] ? overviewMap : null);
+  });
+}
+
+function showOverviewInfo(cat, r) {
+  const catDef = OVERVIEW_CATS.find(c => c.key === cat);
+  const webBtn = r.website ? `<a class="cl cl-web" href="${r.website}" target="_blank"><i class="ti ti-world"></i> Website</a>` : '';
+  const tixBtn = r.tickets ? `<a class="cl cl-tix" href="${r.tickets}" target="_blank"><i class="ti ti-ticket"></i> Book tickets</a>` : '';
+  const mapsBtn = r.maps ? `<a class="cl cl-maps" href="${r.maps}" target="_blank"><i class="ti ti-map-pin"></i> Google Maps</a>` : '';
+  document.getElementById('mv-info').innerHTML = `
+    <div class="mv-info-hdr">
+      <span class="mv-dot" style="background:${catDef.color}"></span>
+      <div>
+        <div class="card-name">${r.nm}</div>
+        <div class="card-sub">${r.sub || r.hrs || ''}</div>
+      </div>
+    </div>
+    ${buildBody(r)}
+    <div class="card-links">${mapsBtn}${webBtn}${tixBtn}<button class="cl cl-wl" onclick="goTo('${cat}','${r.id}')"><i class="ti ti-arrow-right"></i> View full entry</button></div>
+  `;
+}
+
+function initOverviewMap() {
+  if (overviewMap || !gmapsReady) return;
+  const el = document.getElementById('mv-map');
+  if (!el) return;
+  overviewMap = new google.maps.Map(el, {
+    center: {lat: 39.0, lng: 1.42},
+    zoom: 10.3,
+    streetViewControl: false,
+    fullscreenControl: false,
+    mapTypeControl: false,
+    styles: [{featureType: 'poi', stylers: [{visibility: 'off'}]}],
+  });
+  OVERVIEW_CATS.forEach(c => {
+    c.src().forEach((r, i) => {
+      if (r.lat == null || r.lng == null) return;
+      const marker = new google.maps.Marker({
+        position: {lat: r.lat, lng: r.lng},
+        map: overviewMap,
+        icon: catMarkerIcon(i + 1, c.color),
+        title: r.nm,
+      });
+      marker.addListener('click', () => showOverviewInfo(c.key, r));
+      overviewMarkers.push({marker, cat: c.key, id: r.id});
+    });
+  });
+  addVillaMarker(overviewMap);
+  renderOverviewFilters();
 }
 
 function initTabMap(tab) {
