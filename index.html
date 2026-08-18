@@ -87,6 +87,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cl-at{background:var(--grnbg);color:var(--green);border-color:var(--grnbd)}
 .cl-wl{background:var(--sand);color:var(--sec);border-color:var(--border);transition:all .2s}
 .cl-wl.copied{background:var(--grnbg);color:var(--green);border-color:var(--grnbd)}
+.cl-icon{padding:6px 8px}
+.cl-icon i{font-size:14px}
 /* Itineraries */
 .itn-slots{padding:0 12px 14px 43px}
 .slot{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid #F0E8D8}
@@ -285,10 +287,12 @@ function copyWLLink(cat, id) {
   navigator.clipboard.writeText(url).then(() => {
     if (btn) {
       btn.classList.add('copied');
-      btn.innerHTML = '<i class="ti ti-check"></i> Copied — paste into Wanderlog notes';
+      btn.innerHTML = '<i class="ti ti-check"></i>';
+      btn.title = 'Copied — paste into Wanderlog notes';
       setTimeout(() => {
         btn.classList.remove('copied');
-        btn.innerHTML = '<i class="ti ti-link"></i> Copy link for Wanderlog';
+        btn.innerHTML = '<i class="ti ti-link"></i>';
+        btn.title = 'Copy link for Wanderlog';
       }, 2500);
     }
   }).catch(() => {
@@ -376,7 +380,7 @@ function buildBody(r) {
 }
 
 function renderCard(r, cat, extraBody='', num='') {
-  const wlBtn = `<button id="wl-${r.id}" class="cl cl-wl" onclick="copyWLLink('${cat}','${r.id}')"><i class="ti ti-link"></i> Copy link for Wanderlog</button>`;
+  const wlBtn = `<button id="wl-${r.id}" class="cl cl-wl cl-icon" title="Copy link for Wanderlog" onclick="copyWLLink('${cat}','${r.id}')"><i class="ti ti-link"></i></button>`;
   const webBtn = r.website ? `<a class="cl cl-web" href="${r.website}" target="_blank"><i class="ti ti-world"></i> Website</a>` : '';
   const tixBtn = r.tickets ? `<a class="cl cl-tix" href="${r.tickets}" target="_blank"><i class="ti ti-ticket"></i> Book tickets</a>` : '';
   const mapsBtn = r.maps ? `<a class="cl cl-maps" href="${r.maps}" target="_blank"><i class="ti ti-map-pin"></i> Google Maps</a>` : '';
@@ -488,7 +492,7 @@ function renderPlan() {
       const border = i < it.slots.length-1 ? '' : 'border:none;padding-bottom:0';
       return `<div class="slot" style="${border}"><div class="slot-time">${sl.time}</div><div>${numBadge}${nm}</div></div>`;
     }).join('');
-    const wlBtn = `<button id="wl-itn-${it.id}" class="cl cl-wl" onclick="copyWLLink('plan','itn-${it.id}')"><i class="ti ti-link"></i> Copy link for Wanderlog</button>`;
+    const wlBtn = `<button id="wl-itn-${it.id}" class="cl cl-wl cl-icon" title="Copy link for Wanderlog" onclick="copyWLLink('plan','itn-${it.id}')"><i class="ti ti-link"></i></button>`;
     h += `<div class="card" id="itn-${it.id}">
       <div class="card-hdr" onclick="toggleItinCard('itn-${it.id}')">
         <div class="ex"><div class="ex-c">${idx+1}</div><span class="ex-arr"></span></div>
