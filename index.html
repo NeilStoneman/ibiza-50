@@ -511,6 +511,7 @@ function renderWalks(lenF, diffF) {
     h += renderCard(r, 'walks', '', i+1);
   });
   document.getElementById('walks-list').innerHTML = h;
+  applyTabMapFilter('walks');
 }
 
 function renderShops() {
@@ -532,6 +533,7 @@ function renderSights(f) {
     h += renderCard(r, 'sights', catBadge, i+1);
   });
   document.getElementById('sights-list').innerHTML = h;
+  applyTabMapFilter('sights');
 }
 
 function renderPlan() {
@@ -584,6 +586,8 @@ let gmapsReady = false;
 let lastShownTab = 'mapview';
 let villaInfoWin = null;
 const tabMaps = {};
+const tabMarkers = {};
+const TAB_MAP_VIEW = {lat: 39.0, lng: 1.42, zoom: 10.3};
 const MAP_DATA = {clubs:() => CLUBS, eat:() => EATS, walks:() => WALKS, shops:() => SHOPS, sights:() => SIGHTS};
 
 function onGMapsReady() {
@@ -732,29 +736,47 @@ function initOverviewMap() {
   renderOverviewFilters();
 }
 
+function tabMarkerVisible(tab, r) {
+  if (tab === 'walks') return inWalkLenBand(r.distKm, walkLenFilter) && (walkDiffFilter === 'all' || r.diff === walkDiffFilter);
+  if (tab === 'sights') return sightFilter === 'all' || r.cat === sightFilter;
+  return true;
+}
+
+function applyTabMapFilter(tab) {
+  const map = tabMaps[tab];
+  if (!map || !tabMarkers[tab]) return;
+  tabMarkers[tab].forEach(({marker, entry}) => {
+    marker.setMap(tabMarkerVisible(tab, entry) ? map : null);
+  });
+  map.setCenter({lat: TAB_MAP_VIEW.lat, lng: TAB_MAP_VIEW.lng});
+  map.setZoom(TAB_MAP_VIEW.zoom);
+}
+
 function initTabMap(tab) {
   lastShownTab = tab;
   if (!MAP_DATA[tab] || tabMaps[tab] || !gmapsReady) return;
   const el = document.getElementById(tab + '-map');
   if (!el) return;
   const map = new google.maps.Map(el, {
-    center: {lat: 39.0, lng: 1.42},
-    zoom: 10.3,
+    center: {lat: TAB_MAP_VIEW.lat, lng: TAB_MAP_VIEW.lng},
+    zoom: TAB_MAP_VIEW.zoom,
     streetViewControl: false,
     fullscreenControl: false,
     mapTypeControl: false,
     styles: [{featureType: 'poi', stylers: [{visibility: 'off'}]}],
   });
   tabMaps[tab] = map;
+  tabMarkers[tab] = [];
   MAP_DATA[tab]().forEach((r, i) => {
     if (r.lat == null || r.lng == null) return;
     const marker = new google.maps.Marker({
       position: {lat: r.lat, lng: r.lng},
-      map: map,
+      map: tabMarkerVisible(tab, r) ? map : null,
       icon: tabMarkerIcon(i + 1),
       title: r.nm,
     });
     marker.addListener('click', () => openMapMarker(tab, r.id));
+    tabMarkers[tab].push({marker, id: r.id, entry: r});
   });
   addVillaMarker(map);
 }
