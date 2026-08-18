@@ -494,7 +494,6 @@ function renderPlan() {
       const border = i < it.slots.length-1 ? '' : 'border:none;padding-bottom:0';
       return `<div class="slot" style="${border}"><div class="slot-time">${sl.time}</div><div>${numBadge}${nm}</div></div>`;
     }).join('');
-    const wlBtn = `<button id="wl-itn-${it.id}" class="cl cl-wl cl-icon" title="Copy link for Wanderlog" onclick="copyWLLink('plan','itn-${it.id}')"><i class="ti ti-link"></i></button>`;
     h += `<div class="card" id="itn-${it.id}">
       <div class="card-hdr" onclick="toggleItinCard('itn-${it.id}')">
         <div class="ex"><div class="ex-c">${idx+1}</div><span class="ex-arr"></span></div>
@@ -507,7 +506,6 @@ function renderPlan() {
         <div class="card-divider"></div>
         <div class="itn-map" id="itn-map-${it.id}"></div>
         <div class="itn-slots">${slotsHtml}</div>
-        <div style="padding:0 12px 14px 56px"><div class="card-links">${wlBtn}</div></div>
       </div>
     </div>`;
   });
