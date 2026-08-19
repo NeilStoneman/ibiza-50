@@ -51,6 +51,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .mv-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
 .mv-chip.off{opacity:.35}
 .mv-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.mv-legend{cursor:default}
+.mv-dot-ring{background:transparent;border:2px solid var(--must);box-sizing:border-box}
 .mv-split{display:flex;flex-direction:row;height:75vh;border-top:1px solid var(--border)}
 .mv-map{width:50%;height:100%;background:var(--sand);border-right:1px solid var(--border)}
 .mv-info{width:50%;height:100%;overflow-y:auto;padding:14px}
@@ -700,24 +702,30 @@ let overviewMap = null;
 let overviewMarkers = [];
 const overviewFilters = {clubs:true, eat:true, walks:true, sights:true, shops:true};
 
-function catMarkerIcon(n, color) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-    <circle cx="14" cy="14" r="12" fill="${color}" stroke="#fff" stroke-width="2"/>
-    <text x="14" y="14" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#fff">${n}</text>
+function catMarkerIcon(n, color, isMust) {
+  const size = isMust ? 34 : 28;
+  const c = size / 2;
+  const ring = isMust ? `<circle cx="${c}" cy="${c}" r="15" fill="none" stroke="#9F1239" stroke-width="3"/>` : '';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+    ${ring}
+    <circle cx="${c}" cy="${c}" r="12" fill="${color}" stroke="#fff" stroke-width="2"/>
+    <text x="${c}" y="${c}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#fff">${n}</text>
   </svg>`;
   return {
     url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
-    scaledSize: new google.maps.Size(28, 28),
-    anchor: new google.maps.Point(14, 14),
+    scaledSize: new google.maps.Size(size, size),
+    anchor: new google.maps.Point(c, c),
   };
 }
 
 function renderOverviewFilters() {
   const el = document.getElementById('mv-filters');
   if (!el) return;
-  el.innerHTML = OVERVIEW_CATS.map(c =>
+  const cats = OVERVIEW_CATS.map(c =>
     `<span class="mv-chip${overviewFilters[c.key] ? '' : ' off'}" onclick="toggleOverviewFilter('${c.key}')"><span class="mv-dot" style="background:${c.color}"></span>${c.label}</span>`
   ).join('');
+  const legend = `<span class="mv-chip mv-legend"><span class="mv-dot mv-dot-ring"></span>Must-do</span>`;
+  el.innerHTML = cats + legend;
 }
 
 function toggleOverviewFilter(key) {
@@ -765,7 +773,7 @@ function initOverviewMap() {
       const marker = new google.maps.Marker({
         position: {lat: r.lat, lng: r.lng},
         map: overviewMap,
-        icon: catMarkerIcon(i + 1, c.color),
+        icon: catMarkerIcon(i + 1, c.color, !!r.must),
         title: r.nm,
       });
       marker.addListener('click', () => showOverviewInfo(c.key, r));
