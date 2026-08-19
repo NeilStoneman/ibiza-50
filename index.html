@@ -549,13 +549,13 @@ function renderCard(r, cat, extraBody='', num='') {
 
 function renderClubs() {
   let h = '';
-  CLUBS.forEach((r,i) => { h += renderCard(r, 'clubs', '', i+1); });
+  mustFirst(CLUBS).forEach((r,i) => { h += renderCard(r, 'clubs', '', i+1); });
   document.getElementById('clubs-list').innerHTML = h;
 }
 
 function renderEats() {
   let h = '';
-  EATS.forEach((r,i) => { h += renderCard(r, 'eat', '', i+1); });
+  mustFirst(EATS).forEach((r,i) => { h += renderCard(r, 'eat', '', i+1); });
   document.getElementById('eat-list').innerHTML = h;
 }
 
@@ -586,7 +586,7 @@ function renderWalks(lenF, diffF) {
   ).join('');
   let h = `<div class="sf-group"><span class="sf-label">Length</span><div class="sf-row">${lenBtns}</div></div>
     <div class="sf-group"><span class="sf-label">Difficulty</span><div class="sf-row">${diffBtns}</div></div>`;
-  WALKS.filter(r => inWalkLenBand(r.distKm, walkLenFilter) && (walkDiffFilter==='all' || r.diff===walkDiffFilter)).forEach((r,i) => {
+  mustFirst(WALKS.filter(r => inWalkLenBand(r.distKm, walkLenFilter) && (walkDiffFilter==='all' || r.diff===walkDiffFilter))).forEach((r,i) => {
     h += renderCard(r, 'walks', '', i+1);
   });
   document.getElementById('walks-list').innerHTML = h;
@@ -595,13 +595,13 @@ function renderWalks(lenF, diffF) {
 
 function renderShops() {
   let h = '';
-  SHOPS.forEach((r,i) => { h += renderCard(r, 'shops', '', i+1); });
+  mustFirst(SHOPS).forEach((r,i) => { h += renderCard(r, 'shops', '', i+1); });
   document.getElementById('shops-list').innerHTML = h;
 }
 
 function renderParking() {
   let h = '';
-  PARKING.forEach((r,i) => { h += renderCard(r, 'parking', '', i+1); });
+  mustFirst(PARKING).forEach((r,i) => { h += renderCard(r, 'parking', '', i+1); });
   document.getElementById('parking-list').innerHTML = h;
 }
 
@@ -612,7 +612,7 @@ function renderSights(f) {
     `<button class="sf-btn${sightFilter===c?' on':''}" onclick="renderSights('${c}')">${c==='all'?'All':c}</button>`
   ).join('');
   let h = `<div class="sf-row">${btns}</div>`;
-  SIGHTS.filter(r => sightFilter==='all' || r.cat===sightFilter).forEach((r,i) => {
+  mustFirst(SIGHTS.filter(r => sightFilter==='all' || r.cat===sightFilter)).forEach((r,i) => {
     const cc = r.cat.replace(/[\/\s]+/g,'-');
     const catBadge = `<span class="catb cat-${cc}" style="margin-bottom:4px;display:inline-block">${r.cat}</span>`;
     h += renderCard(r, 'sights', catBadge, i+1);
@@ -676,6 +676,10 @@ const tabMaps = {};
 const tabMarkers = {};
 const TAB_MAP_VIEW = {lat: 39.0, lng: 1.42, zoom: 10.3};
 const MAP_DATA = {clubs:() => CLUBS, eat:() => EATS, walks:() => WALKS, shops:() => SHOPS, sights:() => SIGHTS, parking:() => PARKING};
+
+function mustFirst(arr) {
+  return [...arr].sort((a, b) => (b.must ? 1 : 0) - (a.must ? 1 : 0));
+}
 
 function onGMapsReady() {
   gmapsReady = true;
@@ -825,7 +829,7 @@ function initOverviewMap() {
     styles: [{featureType: 'poi', stylers: [{visibility: 'off'}]}],
   });
   OVERVIEW_CATS.forEach(c => {
-    c.src().forEach((r, i) => {
+    mustFirst(c.src()).forEach((r, i) => {
       if (r.lat == null || r.lng == null) return;
       const marker = new google.maps.Marker({
         position: {lat: r.lat, lng: r.lng},
@@ -872,7 +876,7 @@ function initTabMap(tab) {
   });
   tabMaps[tab] = map;
   tabMarkers[tab] = [];
-  MAP_DATA[tab]().forEach((r, i) => {
+  mustFirst(MAP_DATA[tab]()).forEach((r, i) => {
     if (r.lat == null || r.lng == null) return;
     const marker = new google.maps.Marker({
       position: {lat: r.lat, lng: r.lng},
