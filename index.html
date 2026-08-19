@@ -51,7 +51,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .mv-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
 .mv-chip.off{opacity:.35}
 .mv-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.mv-legend{cursor:default}
+.mv-chip.active{background:var(--mustbg);color:var(--must);border-color:var(--mustbd)}
 .mv-dot-ring{background:transparent;border:2px solid var(--must);box-sizing:border-box}
 .mv-split{display:flex;flex-direction:row;height:75vh;border-top:1px solid var(--border)}
 .mv-map{width:50%;height:100%;background:var(--sand);border-right:1px solid var(--border)}
@@ -728,12 +728,11 @@ const OVERVIEW_CATS = [
   {key:'eat', label:'Eat', color:'#EA580C', src:() => EATS},
   {key:'walks', label:'Walks', color:'#16A34A', src:() => WALKS},
   {key:'sights', label:'Sights', color:'#2563EB', src:() => SIGHTS},
-  {key:'shops', label:'Shops', color:'#64748B', src:() => SHOPS},
-  {key:'parking', label:'Parking', color:'#0891B2', src:() => PARKING},
 ];
 let overviewMap = null;
 let overviewMarkers = [];
-const overviewFilters = {clubs:true, eat:true, walks:true, sights:true, shops:true};
+let mustOnlyFilter = false;
+const overviewFilters = {clubs:true, eat:true, walks:true, sights:true};
 
 function catMarkerIcon(n, color, isMust) {
   const size = isMust ? 34 : 28;
@@ -757,16 +756,27 @@ function renderOverviewFilters() {
   const cats = OVERVIEW_CATS.map(c =>
     `<span class="mv-chip${overviewFilters[c.key] ? '' : ' off'}" onclick="toggleOverviewFilter('${c.key}')"><span class="mv-dot" style="background:${c.color}"></span>${c.label}</span>`
   ).join('');
-  const legend = `<span class="mv-chip mv-legend"><span class="mv-dot mv-dot-ring"></span>Must-do</span>`;
-  el.innerHTML = cats + legend;
+  const must = `<span class="mv-chip${mustOnlyFilter ? ' active' : ''}" onclick="toggleMustOnlyFilter()"><span class="mv-dot mv-dot-ring"></span>Must-do</span>`;
+  el.innerHTML = cats + must;
+}
+
+function applyOverviewVisibility() {
+  overviewMarkers.forEach(m => {
+    const visible = overviewFilters[m.cat] && (!mustOnlyFilter || m.must);
+    m.marker.setMap(visible ? overviewMap : null);
+  });
 }
 
 function toggleOverviewFilter(key) {
   overviewFilters[key] = !overviewFilters[key];
   renderOverviewFilters();
-  overviewMarkers.forEach(m => {
-    if (m.cat === key) m.marker.setMap(overviewFilters[key] ? overviewMap : null);
-  });
+  applyOverviewVisibility();
+}
+
+function toggleMustOnlyFilter() {
+  mustOnlyFilter = !mustOnlyFilter;
+  renderOverviewFilters();
+  applyOverviewVisibility();
 }
 
 function showOverviewInfo(cat, r) {
@@ -810,7 +820,7 @@ function initOverviewMap() {
         title: r.nm,
       });
       marker.addListener('click', () => showOverviewInfo(c.key, r));
-      overviewMarkers.push({marker, cat: c.key, id: r.id});
+      overviewMarkers.push({marker, cat: c.key, id: r.id, must: !!r.must});
     });
   });
   addVillaMarker(overviewMap);
