@@ -583,8 +583,10 @@ function renderPlan() {
     let locIdx = 0;
     const slotsHtml = it.slots.map((sl,i) => {
       const numBadge = (sl.tab && sl.id) ? `<span class="slot-num">${++locIdx}</span>` : '';
+      const entry = (sl.tab && sl.id) ? findMapEntry(sl.tab, sl.id) : null;
+      const mustBadge = entry && entry.must ? ` <span class="pill pill-must">Must-do</span>` : '';
       const nm = sl.tab
-        ? `<span class="slot-name slot-link" onclick="goTo('${sl.tab}','${sl.id}')">${sl.nm}</span>`
+        ? `<span class="slot-name slot-link" onclick="goTo('${sl.tab}','${sl.id}')">${sl.nm}</span>${mustBadge}`
         : `<span class="slot-name">${sl.nm}</span>`;
       const border = i < it.slots.length-1 ? '' : 'border:none;padding-bottom:0';
       return `<div class="slot" style="${border}"><div class="slot-time">${sl.time}</div><div>${numBadge}${nm}</div></div>`;
