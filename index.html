@@ -56,7 +56,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .mv-split{display:flex;flex-direction:row;height:75vh;border-top:1px solid var(--border)}
 .mv-map{width:50%;height:100%;background:var(--sand);border-right:1px solid var(--border)}
 .mv-info{width:50%;height:100%;overflow-y:auto;padding:14px}
-.mv-info-empty{color:var(--muted);font-size:13px;text-align:center;padding:40px 20px}
 .mv-info-hdr{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
 .mv-info-hdr .mv-dot{width:11px;height:11px;margin-top:5px}
 .slot-num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;font-weight:700;margin-right:6px;vertical-align:middle;flex-shrink:0}
@@ -191,7 +190,26 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <div class="mv-filters" id="mv-filters"></div>
   <div class="mv-split">
     <div class="mv-map" id="mv-map"></div>
-    <div class="mv-info" id="mv-info"><div class="mv-info-empty">Tap a pin on the map to see details here</div></div>
+    <div class="mv-info" id="mv-info">
+      <p class="card-desc">This map shows everywhere in the guide in one place, colour-coded by type. Tap any pin on the left to see its full details here.</p>
+      <div class="card-section">
+        <div class="section-title">Using This Map</div>
+        <ul class="section-list">
+          <li><span class="section-key">Filter chips:</span> tap Clubs, Eat, Walks or Sights above the map to show or hide that colour of pin.</li>
+          <li><span class="section-key">Must-do:</span> tap this to show only the handful of unmissable stops — tap again to bring everything back.</li>
+          <li><span class="section-key">The villa:</span> the house icon is where you're staying.</li>
+        </ul>
+      </div>
+      <div class="card-section">
+        <div class="section-title">The Other Tabs</div>
+        <ul class="section-list">
+          <li><span class="section-key">Clubs, Eat, Walks, Sights:</span> the same places as this map, but as a full scrollable list with all the details, opening hours and tips.</li>
+          <li><span class="section-key">Plan:</span> ready-made day plans that string several places together, including a few built around specific dates.</li>
+          <li><span class="section-key">Parking:</span> where to park near each area, and what it costs.</li>
+          <li><span class="section-key">Shops:</span> the nearest supermarkets for a villa shop.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 <div id="clubs" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="clubs-map" class="tab-map"></div></div><div class="tab-list-col" id="clubs-list"></div></div></div>
