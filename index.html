@@ -739,6 +739,7 @@ function showOverviewInfo(cat, r) {
       <div>
         <div class="card-name">${r.nm}</div>
         <div class="card-sub">${r.sub || r.hrs || ''}</div>
+        ${r.must ? '<div class="pills-row" style="margin-top:5px"><span class="pill pill-must">Must-do</span></div>' : ''}
       </div>
     </div>
     ${buildBody(r)}
