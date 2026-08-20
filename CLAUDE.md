@@ -127,8 +127,13 @@ Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
 
-### Plan (6 itinerary cards)
-Local & easy · North day · Heights & south coast · Old town day · Hidden north · Santa Eulalia day
+### Plan (13 itinerary cards — one per trip day, Wed Sep 2 – Wed Sep 9)
+Rebuilt as a date-anchored day-by-day plan rather than a mix of flexible/dated cards. Wed 2, Fri 4 (Ushuaïa, fixed) and Wed 9 (departure) get one card each; Thu 3, Sat 5, Sun 6, Mon 7 and Tue 8 each get two alternative options (`-a`/`-b` id suffix) so there's a choice without doubling up. Design rules for this tab:
+- Each club (`c-*`) appears in at most one card, full stop — no club is repeated across the whole Plan tab, even as an "either/or" option on different days.
+- Every single card stays within one geographic zone of the island (no north-then-south backtracking in one day). The mini-map on each card is a good sanity check for this.
+- Can Pilot is deliberately not used before Fri Sep 4 — it's saved for a night the friends who arrive Thu Sep 3 can enjoy too (currently Sun 6-a).
+- Ses Salines is used only on departure day (Wed 9) — it's 5 minutes from the runway, ideal for a last morning.
+- Unscheduled clubs (currently Café Mambo) and several Eat/Walks/Sights entries remain browsable in their own tabs even though they're not in any itinerary — that's expected, not a gap to fill.
 
 ---
 
