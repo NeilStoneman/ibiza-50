@@ -15,7 +15,7 @@ A single-file HTML trip guide for a 50th birthday trip to Ibiza, September 2–9
 
 Single HTML file — vanilla JS, no frameworks, no build step.  
 Tabler icons loaded from cdnjs.cloudflare.com.  
-Six tabs: **Clubs | Eat | Walks | Shops | Sights | Plan**
+Seven tabs: **Map | Clubs | Eat | Walks | Sights | Parking | Shops**
 
 ### Card design
 Each item is a card with:
@@ -127,13 +127,8 @@ Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
 
-### Plan (13 itinerary cards — one per trip day, Wed Sep 2 – Wed Sep 9)
-Rebuilt as a date-anchored day-by-day plan rather than a mix of flexible/dated cards. Wed 2, Fri 4 (Ushuaïa, fixed) and Wed 9 (departure) get one card each; Thu 3, Sat 5, Sun 6, Mon 7 and Tue 8 each get two alternative options (`-a`/`-b` id suffix) so there's a choice without doubling up. Design rules for this tab:
-- Each club (`c-*`) appears in at most one card, full stop — no club is repeated across the whole Plan tab, even as an "either/or" option on different days.
-- Every single card stays within one geographic zone of the island (no north-then-south backtracking in one day). The mini-map on each card is a good sanity check for this.
-- Can Pilot is deliberately not used before Fri Sep 4 — it's saved for a night the friends who arrive Thu Sep 3 can enjoy too (currently Sun 6-a).
-- Ses Salines is used only on departure day (Wed 9) — it's 5 minutes from the runway, ideal for a last morning.
-- Unscheduled clubs (currently Café Mambo) and several Eat/Walks/Sights entries remain browsable in their own tabs even though they're not in any itinerary — that's expected, not a gap to fill.
+### Plan tab — removed (2026-08-21)
+The Plan tab (day-by-day itinerary cards) was built, iterated on, and then dropped entirely at the user's request. There is no Plan tab, no `ITINS` data, and no itinerary-related rendering code in `index.html` — don't reintroduce it without being asked. The site is Map | Clubs | Eat | Walks | Sights | Parking | Shops.
 
 ---
 
