@@ -15,7 +15,7 @@ A single-file HTML trip guide for a 50th birthday trip to Ibiza, September 2–9
 
 Single HTML file — vanilla JS, no frameworks, no build step.  
 Tabler icons loaded from cdnjs.cloudflare.com.  
-Seven tabs: **Map | Clubs | Eat | Walks | Sights | Parking | Shops**
+Eight tabs: **Map | Clubs | Eat | Walks | Beaches | Sights | Parking | Shops**
 
 ### Card design
 Each item is a card with:
@@ -115,6 +115,15 @@ Remaining entries (positions 11+, not yet ordered/researched):
 - `e-canaribes` — Ca na Ribes (Santa Eulalia, since 1926, best paella)
 - `e-lasdalias` — Las Dalias night market (Sat/Sun/Mon/Tue 7-11:30pm, free entry)
 - Various others (Es Pins, Can Cosmi, El Rincón de Pepe, etc.)
+
+### Beaches (4 entries — COMPLETE, added 2026-08-30)
+Curated, max-4-entry tab for quiet, non-family, snorkel-friendly beaches — deliberately not the full "every beach on the island" list that Sights' Beach category covers. Each entry uses the `BEACHES` array (`b-` id prefix) and shows on the overview Map tab as its own filter chip/colour (`#0891B2`, teal).
+
+Entries: Punta Galera · Cala Xarraca · Cala d'en Serra · Es Portixol
+
+Pills vocabulary specific to this tab: `Quiet` (free/green), `Snorkelling` (genre/purple), `Walk` (info/blue), `Sunset` (time/green) — reused existing pill types rather than adding new CSS classes. Not every entry gets all four; only what's true.
+
+Cross-referencing: each Beach entry links out to its matching Walks entry (all four already existed as Walks before this tab was added) and, where genuinely nearby, an Eat entry. The reverse links were added too — the four Walks entries, plus the Sights entries for Punta Galera and Cala Xarraca, and the Al Ayoun / Aubergine by Atzaró Eat entries, all got a `slot-link` back to the relevant Beaches card. Follow this same pattern (`goTo('beaches','b-xxx')` via the existing `slot-link` convention) for any future cross-referencing.
 
 ### Walks (10 entries — basic content, not yet deep-dived)
 All have distance, difficulty, best-time chips. Content needs more route detail and practical tips.
