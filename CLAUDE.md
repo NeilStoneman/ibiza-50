@@ -116,14 +116,16 @@ Remaining entries (positions 11+, not yet ordered/researched):
 - `e-lasdalias` — Las Dalias night market (Sat/Sun/Mon/Tue 7-11:30pm, free entry)
 - Various others (Es Pins, Can Cosmi, El Rincón de Pepe, etc.)
 
-### Beaches (4 entries — COMPLETE, added 2026-08-30)
-Curated, max-4-entry tab for quiet, non-family, snorkel-friendly beaches — deliberately not the full "every beach on the island" list that Sights' Beach category covers. Each entry uses the `BEACHES` array (`b-` id prefix) and shows on the overview Map tab as its own filter chip/colour (`#0891B2`, teal).
+### Beaches (5 entries — ONGOING, added 2026-08-30)
+Curated tab for quiet, non-family, snorkel-friendly beaches — deliberately not the full "every beach on the island" list that Sights' Beach category covers. Originally capped at 4 entries; the user lifted that cap on 2026-09-01 ("not sure why the cap was 4 anyway... if we find more good ones, let's add them") so it's now open-ended — keep adding genuinely quiet/uncrowded/snorkel-worthy beaches as they come up, same selection bar as before. Each entry uses the `BEACHES` array (`b-` id prefix) and shows on the overview Map tab as its own filter chip/colour (`#0891B2`, teal) — no code changes needed to add an entry, just add to the array.
 
-Entries: Punta Galera · Cala Xarraca · Cala d'en Serra · Es Portixol
+Entries: Punta Galera · Cala Xarraca · Cala d'en Serra · Es Portixol · Pou des Lleó (NE coast near Sant Carles, added 2026-09-01 — no nearby Walks/Eat entry to cross-link, so it's standalone)
 
-Pills vocabulary specific to this tab: `Quiet` (free/green), `Snorkelling` (genre/purple), `Walk` (info/blue), `Sunset` (time/green) — reused existing pill types rather than adding new CSS classes. Not every entry gets all four; only what's true.
+Selection bar (apply before adding more): genuinely quiet/uncrowded even in season, not a family-beach-club scene, good snorkelling. Candidates that failed this bar and were routed to Sights instead: Cala Comte/Platges de Comte (iconic but very crowded, Sunset Ashram) and Cala Salada (family-friendly, lifeguards, gets crowded — also redundant as it's already the parking/access point for Punta Galera).
 
-Cross-referencing: each Beach entry links out to its matching Walks entry (all four already existed as Walks before this tab was added) and, where genuinely nearby, an Eat entry. The reverse links were added too — the four Walks entries, plus the Sights entries for Punta Galera and Cala Xarraca, and the Al Ayoun / Aubergine by Atzaró Eat entries, all got a `slot-link` back to the relevant Beaches card. Follow this same pattern (`goTo('beaches','b-xxx')` via the existing `slot-link` convention) for any future cross-referencing.
+Pills vocabulary specific to this tab: `Quiet` (free/green), `Snorkelling` (genre/purple), `Walk` (info/blue), `Sunset` (time/green) — reused existing pill types rather than adding new CSS classes. Not every entry gets all four; only what's true — e.g. Pou des Lleó only gets Quiet + Snorkelling since there's no matching Walks entry and it's not a sunset-facing beach.
+
+Cross-referencing: where a matching Walks entry or genuinely nearby Eat entry exists, link both ways via `goTo('beaches','b-xxx')` / `goTo('walks'|'eat', ...)` `slot-link`s (see Punta Galera, Cala Xarraca, Cala d'en Serra, Es Portixol for the pattern). Don't force a cross-link where nothing is genuinely close — Pou des Lleó has none.
 
 ### Walks (10 entries — basic content, not yet deep-dived)
 All have distance, difficulty, best-time chips. Content needs more route detail and practical tips.
