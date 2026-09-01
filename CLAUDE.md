@@ -136,12 +136,12 @@ Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni · De
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
 
-### Links (2 categories — COMPLETE, added 2026-09-01)
-A simple, deliberately map-free tab for reference links that aren't tied to a specific place. Unlike every other tab, entries here are NOT rendered via `renderCard` — no expand/collapse, no pills, no numbered circle. Just a static heading and a plain list of links, rendered directly by `renderLinks()` from the `LINKS` array (`lk-` id prefix, shape `{id, nm, links:[{label, url}]}`). No `lat`/`lng`, so it's not in `MAP_DATA`/`OVERVIEW_CATS`/`overviewFilters` — never appears on the overview Map or gets an embedded map. Pane markup skips the usual `.tab-split`/`.tab-map-col` wrapper — just `.tab-list-col.links-list` (CSS: `max-width:700px`, plus `.links-card` for padding).
+### Links (3 entries — COMPLETE, added 2026-09-01)
+A simple, deliberately map-free tab for reference content that isn't tied to a specific place. Unlike every other tab, entries here are NOT rendered via `renderCard` — no expand/collapse, no pills, no numbered circle. Just a static heading and either a plain list of links or a short info paragraph, rendered directly by `renderLinks()` from the `LINKS` array (`lk-` id prefix). Each entry is `{id, nm, links:[{label, url}]}` for a set of URLs, or `{id, nm, note:"..."}` for plain advice text — `renderLinks()` branches on which field is present. No `lat`/`lng`, so it's not in `MAP_DATA`/`OVERVIEW_CATS`/`overviewFilters` — never appears on the overview Map or gets an embedded map. Pane markup skips the usual `.tab-split`/`.tab-map-col` wrapper — just `.tab-list-col.links-list` (CSS: `max-width:700px`, plus `.links-card` for padding).
 
-Entries: Driving & Parking Tips (links to Ibiza Spotlight's transport guide) · Walking Guides (links to GPSmyCity and Smart Guide self-guided Ibiza Town tours)
+Entries: Driving & Parking Tips (links to Ibiza Spotlight's transport guide) · Walking Guides (links to GPSmyCity and Smart Guide self-guided Ibiza Town tours) · Withdrawing Cash (plain-text ATM advice — use major-bank ATMs, avoid standalone Euronet machines, always withdraw in EUR)
 
-Add future links the same way: one `LINKS` entry per category/topic, one `{label, url}` per link — heading only, no descriptions or pills.
+Add future entries the same way: `links` for a set of URLs, `note` for plain advice text — heading only, no descriptions or pills either way.
 
 ### Plan tab — removed (2026-08-21)
 The Plan tab (day-by-day itinerary cards) was built, iterated on, and then dropped entirely at the user's request. There is no Plan tab, no `ITINS` data, and no itinerary-related rendering code in `index.html` — don't reintroduce it without being asked. The site is Map | Clubs | Eat | Walks | Sights | Parking | Shops.

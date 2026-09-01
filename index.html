@@ -298,7 +298,8 @@ const PARKING=[
 ];
 const LINKS=[
 {id:"lk-driving",nm:"Driving & Parking Tips",links:[{label:"Ibiza Spotlight — Driving & parking tips",url:"https://www.ibiza-spotlight.com/info/tips_transport_i.htm"}]},
-{id:"lk-walking",nm:"Walking Guides",links:[{label:"GPSmyCity — Ibiza tour guides",url:"https://www.gpsmycity.com/gps-tour-guides/ibiza-4177.html"},{label:"Smart Guide — Ibiza Town in a Nutshell",url:"https://www.smart-guide.org/destinations/en/ibiza/?tour=Ibiza+Town+in+a+Nutshell"}]}
+{id:"lk-walking",nm:"Walking Guides",links:[{label:"GPSmyCity — Ibiza tour guides",url:"https://www.gpsmycity.com/gps-tour-guides/ibiza-4177.html"},{label:"Smart Guide — Ibiza Town in a Nutshell",url:"https://www.smart-guide.org/destinations/en/ibiza/?tour=Ibiza+Town+in+a+Nutshell"}]},
+{id:"lk-atm",nm:"Withdrawing Cash",note:"For cash withdrawals in Spain, use ATMs operated by major banks such as CaixaBank, BBVA, Santander or Banco Sabadell, as these are generally preferable to independent tourist-focused machines. Avoid standalone Euronet ATMs where possible, particularly if there is a bank ATM nearby, as independent machines may have higher fees and more prominent currency-conversion offers. Most importantly, always withdraw in euros (EUR) and decline any offer to convert the transaction into pounds."}
 ];
 
 // ── Expand/collapse ───────────────────────────────────────────────────────────
@@ -537,8 +538,10 @@ function renderParking() {
 function renderLinks() {
   let h = '';
   LINKS.forEach(r => {
-    const items = r.links.map(l => `<li><a class="section-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a></li>`).join('');
-    h += `<div class="card links-card" id="${r.id}"><div class="card-name">${r.nm}</div><ul class="section-list">${items}</ul></div>`;
+    const body = r.links
+      ? `<ul class="section-list">${r.links.map(l => `<li><a class="section-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a></li>`).join('')}</ul>`
+      : `<p class="card-desc">${r.note}</p>`;
+    h += `<div class="card links-card" id="${r.id}"><div class="card-name">${r.nm}</div>${body}</div>`;
   });
   document.getElementById('links-list').innerHTML = h;
 }
