@@ -44,6 +44,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab-map-col{width:42%;flex-shrink:0;position:sticky;top:calc(var(--tabbar-h, 44px) + 10px)}
 .tab-list-col{flex:1;min-width:0}
 .links-list{max-width:700px}
+.links-card{padding:14px 16px}
+.links-card .card-name{display:block;margin-bottom:8px}
 /* Overview map */
 .mv-filters{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
 .mv-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
@@ -295,8 +297,8 @@ const PARKING=[
 {id:"p-benirras",lat:39.0892175,lng:1.4537313,ico:"ti-parking",col:"ico-cy",nm:"Cala Benirràs",sub:"Drum circles & hippie market",badge:null,pills:[{t:"Free",c:"free"},{t:"Sun: shuttle bus only",c:"warn"},{t:"Other days: drive & park",c:"info"}],desc:"How you get there depends entirely on the day — Sunday driving is effectively impossible, while Monday, Tuesday, Friday and Saturday (market days without the drums) are a normal drive-and-park.",sections:[{title:"Where to Park",items:[{key:"Monday, Tuesday, Friday, Saturday",val:"Drive and park directly at the beach — free and straightforward."},{key:"Sunday",val:"Traffic is severe and driving is not realistic. Park at the Sant Joan car park and take the shuttle bus down to the beach instead."}]},{title:"If It's Full",items:[{key:"Arrive early",val:"Whichever day you go, arrive at least 45 minutes before sunset — both the beachside spaces and the Sant Joan car park (Sun) fill up as sunset approaches."}]},{title:"Payment",items:[{key:"Everywhere",val:"Free — including the Sunday shuttle bus."}]}],note:null,maps:"https://www.google.com/maps/search/Cala+Benirras+parking+Ibiza"},
 ];
 const LINKS=[
-{id:"lk-driving",ico:"ti-car",col:"ico-gy",nm:"Driving & Parking Tips",sub:"Ibiza Spotlight guide",badge:null,pills:[{t:"Read before you drive",c:"info"}],desc:"General background on driving and parking on the island — road rules, what to expect from local drivers, and where the tricky spots are — worth a read before renting a car.",sections:[{title:"Link",items:[{key:"Ibiza Spotlight — Driving & parking tips",val:"https://www.ibiza-spotlight.com/info/tips_transport_i.htm"}]}],note:null},
-{id:"lk-walking",ico:"ti-walk",col:"ico-gy",nm:"Walking Guides",sub:"Self-guided town walks & tours",badge:null,pills:[{t:"Self-guided tours",c:"info"}],desc:"Self-guided walking tour guides for exploring on foot — good for filling a spare hour in Ibiza Town beyond the routes already in the Walks tab.",sections:[{title:"Links",items:[{key:"GPSmyCity — Ibiza tour guides",val:"https://www.gpsmycity.com/gps-tour-guides/ibiza-4177.html"},{key:"Smart Guide — Ibiza Town in a Nutshell",val:"https://www.smart-guide.org/destinations/en/ibiza/?tour=Ibiza+Town+in+a+Nutshell"}]}],note:null}
+{id:"lk-driving",nm:"Driving & Parking Tips",links:[{label:"Ibiza Spotlight — Driving & parking tips",url:"https://www.ibiza-spotlight.com/info/tips_transport_i.htm"}]},
+{id:"lk-walking",nm:"Walking Guides",links:[{label:"GPSmyCity — Ibiza tour guides",url:"https://www.gpsmycity.com/gps-tour-guides/ibiza-4177.html"},{label:"Smart Guide — Ibiza Town in a Nutshell",url:"https://www.smart-guide.org/destinations/en/ibiza/?tour=Ibiza+Town+in+a+Nutshell"}]}
 ];
 
 // ── Expand/collapse ───────────────────────────────────────────────────────────
@@ -534,7 +536,10 @@ function renderParking() {
 
 function renderLinks() {
   let h = '';
-  LINKS.forEach((r,i) => { h += renderCard(r, 'links', '', i+1); });
+  LINKS.forEach(r => {
+    const items = r.links.map(l => `<li><a class="section-link" href="${l.url}" target="_blank" rel="noopener">${l.label}</a></li>`).join('');
+    h += `<div class="card links-card" id="${r.id}"><div class="card-name">${r.nm}</div><ul class="section-list">${items}</ul></div>`;
+  });
   document.getElementById('links-list').innerHTML = h;
 }
 

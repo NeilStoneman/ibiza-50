@@ -136,12 +136,12 @@ Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni · De
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
 
-### Links (2 entries — COMPLETE, added 2026-09-01)
-A simple, deliberately map-free tab for reference links that aren't tied to a specific place — external guides rather than POIs. Uses the `LINKS` array (`lk-` id prefix) and the existing `renderCard`/rich-content (`desc`+`sections`) machinery exactly like every other tab, just without a `lat`/`lng`, so it's **not** added to `MAP_DATA`, `OVERVIEW_CATS` or `overviewFilters` — it never appears on the overview Map tab or gets its own embedded map (`initTabMap` no-ops safely for a tab absent from `MAP_DATA`). The pane markup (`<div id="links" class="pane">...`) skips the usual `.tab-split`/`.tab-map-col` wrapper entirely — just a single `.tab-list-col.links-list` column (new CSS rule, `max-width:700px`, so cards don't stretch full-width with no map column to constrain them).
+### Links (2 categories — COMPLETE, added 2026-09-01)
+A simple, deliberately map-free tab for reference links that aren't tied to a specific place. Unlike every other tab, entries here are NOT rendered via `renderCard` — no expand/collapse, no pills, no numbered circle. Just a static heading and a plain list of links, rendered directly by `renderLinks()` from the `LINKS` array (`lk-` id prefix, shape `{id, nm, links:[{label, url}]}`). No `lat`/`lng`, so it's not in `MAP_DATA`/`OVERVIEW_CATS`/`overviewFilters` — never appears on the overview Map or gets an embedded map. Pane markup skips the usual `.tab-split`/`.tab-map-col` wrapper — just `.tab-list-col.links-list` (CSS: `max-width:700px`, plus `.links-card` for padding).
 
 Entries: Driving & Parking Tips (links to Ibiza Spotlight's transport guide) · Walking Guides (links to GPSmyCity and Smart Guide self-guided Ibiza Town tours)
 
-Each entry's URL(s) live in a `sections:[{title:"Link"|"Links", items:[{key, val}]}]` block — `val` is the bare URL, auto-linkified by the existing `linkify()` function, so no custom rendering was needed. Add future links the same way: one card per category/topic, one `items` entry per URL.
+Add future links the same way: one `LINKS` entry per category/topic, one `{label, url}` per link — heading only, no descriptions or pills.
 
 ### Plan tab — removed (2026-08-21)
 The Plan tab (day-by-day itinerary cards) was built, iterated on, and then dropped entirely at the user's request. There is no Plan tab, no `ITINS` data, and no itinerary-related rendering code in `index.html` — don't reintroduce it without being asked. The site is Map | Clubs | Eat | Walks | Sights | Parking | Shops.
