@@ -6,7 +6,7 @@ A single-file HTML trip guide for a 50th birthday trip to Ibiza, September 2–9
 **Live site:** https://ibiza-50.uk  
 **Repo:** https://github.com/NeilStoneman/ibiza-50  
 **File:** `index.html` in repo root  
-**Deployment:** Netlify, auto-deploys on push to main  
+**Deployment:** Cloudflare Pages (project `ibiza-50`), auto-deploys on push to main  
 **Google Maps API key:** AIzaSyBdLpBtavnzfsbNPIsBgXInzUMRnhhDi9Q (restrict to ibiza-50.uk in Google Cloud Console)
 
 ---
@@ -160,7 +160,7 @@ The Plan tab (day-by-day itinerary cards) was built, iterated on, and then dropp
 1. Edit `index.html` directly in the repo
 2. Verify JS syntax: `node --check index.html`
 3. `git add index.html && git commit -m "description" && git push`
-4. Netlify auto-deploys in ~30 seconds
+4. Cloudflare Pages auto-deploys in under a minute
 5. Test deep links at `https://ibiza-50.uk/#tab/item-id`
 
 ---
