@@ -130,8 +130,8 @@ All have distance, difficulty, best-time chips. Content needs more route detail 
 
 Entries: Punta Galera · Cala Bassa loop · Cala d'Hort clifftop · Sa Talaia · Port Sant Miquel circuit · Es Portixol · Cala Xarraca · Punta Moscarter · Cala d'en Serra · Ses Salines
 
-### Shops (4 entries — basic content)
-Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni
+### Shops (5 entries — basic content)
+Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni · Decathlon Ibiza (Puig d'en Valls — sports/beach gear, incl. snorkelling kit)
 
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
