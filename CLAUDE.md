@@ -133,8 +133,8 @@ Entries: Punta Galera · Cala Bassa loop · Cala d'Hort clifftop · Sa Talaia ·
 ### Shops (5 entries — basic content)
 Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni · Decathlon Ibiza (Puig d'en Valls — sports/beach gear, incl. snorkelling kit)
 
-### Sights (11 entries — basic content, category filter)
-Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
+### Sights (15 entries — basic content, category filter)
+Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip · Ibiza Town Marina · Cala Tarida · Las Dalias Hippy Market · Cala Comte (Platges de Comte, added 2026-09-01 — iconic but genuinely crowded west-coast beach/Sunset Ashram, deliberately kept out of the Beaches tab for that reason; cross-linked with the Cala Bassa walk it ends at)
 
 ### Links (3 entries — COMPLETE, added 2026-09-01)
 A simple, deliberately map-free tab for reference content that isn't tied to a specific place. Unlike every other tab, entries here are NOT rendered via `renderCard` — no expand/collapse, no pills, no numbered circle. Just a static heading and either a plain list of links or a short info paragraph, rendered directly by `renderLinks()` from the `LINKS` array (`lk-` id prefix). Each entry is `{id, nm, links:[{label, url}]}` for a set of URLs, or `{id, nm, note:"..."}` for plain advice text — `renderLinks()` branches on which field is present. No `lat`/`lng`, so it's not in `MAP_DATA`/`OVERVIEW_CATS`/`overviewFilters` — never appears on the overview Map or gets an embedded map. Pane markup skips the usual `.tab-split`/`.tab-map-col` wrapper — just `.tab-list-col.links-list` (CSS: `max-width:700px`, plus `.links-card` for padding).
