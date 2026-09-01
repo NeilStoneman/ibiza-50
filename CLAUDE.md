@@ -89,6 +89,8 @@ Key notes:
 ### Eat (22 entries — IN PROGRESS)
 First 9 positions locked. Working through in order adding research and websites.
 
+Note: `e-calaxucla` (Chiringuito Cala Xuclà, north coast near Portinatx — remote fish shack, booking essential) was added 2026-09-01, cross-linked with the new `b-calaxucla` Beaches entry. It sits outside the numbered ordering below, which predates it and is otherwise stale relative to the actual `EATS` array — verify against the array itself, not this list, before relying on entry order/positions.
+
 Current order (first 10):
 1. `e-canpilot` — Can Pilot (your local, San Rafael, closed Wed)
 2. `e-lapaloma` — La Paloma (orange grove dining, Sant Llorenç)
@@ -116,10 +118,10 @@ Remaining entries (positions 11+, not yet ordered/researched):
 - `e-lasdalias` — Las Dalias night market (Sat/Sun/Mon/Tue 7-11:30pm, free entry)
 - Various others (Es Pins, Can Cosmi, El Rincón de Pepe, etc.)
 
-### Beaches (5 entries — ONGOING, added 2026-08-30)
+### Beaches (6 entries — ONGOING, added 2026-08-30)
 Curated tab for quiet, non-family, snorkel-friendly beaches — deliberately not the full "every beach on the island" list that Sights' Beach category covers. Originally capped at 4 entries; the user lifted that cap on 2026-09-01 ("not sure why the cap was 4 anyway... if we find more good ones, let's add them") so it's now open-ended — keep adding genuinely quiet/uncrowded/snorkel-worthy beaches as they come up, same selection bar as before. Each entry uses the `BEACHES` array (`b-` id prefix) and shows on the overview Map tab as its own filter chip/colour (`#0891B2`, teal) — no code changes needed to add an entry, just add to the array.
 
-Entries: Punta Galera · Cala Xarraca · Cala d'en Serra · Es Portixol · Pou des Lleó (NE coast near Sant Carles, added 2026-09-01 — no nearby Walks/Eat entry to cross-link, so it's standalone)
+Entries: Punta Galera · Cala Xarraca · Cala d'en Serra · Es Portixol · Pou des Lleó (NE coast near Sant Carles, added 2026-09-01 — no nearby Walks/Eat entry to cross-link, so it's standalone) · Cala Xuclà (north coast near Portinatx, added 2026-09-01 — cross-linked with its own Eat entry, Chiringuito Cala Xuclà)
 
 Selection bar (apply before adding more): genuinely quiet/uncrowded even in season, not a family-beach-club scene, good snorkelling. Candidates that failed this bar and were routed to Sights instead: Cala Comte/Platges de Comte (iconic but very crowded, Sunset Ashram) and Cala Salada (family-friendly, lifeguards, gets crowded — also redundant as it's already the parking/access point for Punta Galera).
 
