@@ -15,7 +15,7 @@ A single-file HTML trip guide for a 50th birthday trip to Ibiza, September 2–9
 
 Single HTML file — vanilla JS, no frameworks, no build step.  
 Tabler icons loaded from cdnjs.cloudflare.com.  
-Eight tabs: **Map | Clubs | Eat | Walks | Beaches | Sights | Parking | Shops**
+Nine tabs: **Map | Clubs | Eat | Walks | Beaches | Sights | Parking | Shops | Links**
 
 ### Card design
 Each item is a card with:
@@ -135,6 +135,13 @@ Lidl Sant Antoni · Hiper Centro · SPAR San Rafael · Próxim Sant Antoni · De
 
 ### Sights (11 entries — basic content, category filter)
 Dalt Vila · Es Vedrà · Ses Salines · Cala Benirràs · Cala Bassa · Punta Galera · Cala Xarraca · Santa Gertrudis · Sant Joan · Kumharas · Formentera day trip
+
+### Links (2 entries — COMPLETE, added 2026-09-01)
+A simple, deliberately map-free tab for reference links that aren't tied to a specific place — external guides rather than POIs. Uses the `LINKS` array (`lk-` id prefix) and the existing `renderCard`/rich-content (`desc`+`sections`) machinery exactly like every other tab, just without a `lat`/`lng`, so it's **not** added to `MAP_DATA`, `OVERVIEW_CATS` or `overviewFilters` — it never appears on the overview Map tab or gets its own embedded map (`initTabMap` no-ops safely for a tab absent from `MAP_DATA`). The pane markup (`<div id="links" class="pane">...`) skips the usual `.tab-split`/`.tab-map-col` wrapper entirely — just a single `.tab-list-col.links-list` column (new CSS rule, `max-width:700px`, so cards don't stretch full-width with no map column to constrain them).
+
+Entries: Driving & Parking Tips (links to Ibiza Spotlight's transport guide) · Walking Guides (links to GPSmyCity and Smart Guide self-guided Ibiza Town tours)
+
+Each entry's URL(s) live in a `sections:[{title:"Link"|"Links", items:[{key, val}]}]` block — `val` is the bare URL, auto-linkified by the existing `linkify()` function, so no custom rendering was needed. Add future links the same way: one card per category/topic, one `items` entry per URL.
 
 ### Plan tab — removed (2026-08-21)
 The Plan tab (day-by-day itinerary cards) was built, iterated on, and then dropped entirely at the user's request. There is no Plan tab, no `ITINS` data, and no itinerary-related rendering code in `index.html` — don't reintroduce it without being asked. The site is Map | Clubs | Eat | Walks | Sights | Parking | Shops.

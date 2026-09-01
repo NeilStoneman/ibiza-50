@@ -43,6 +43,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab-split{display:flex;gap:14px;align-items:flex-start}
 .tab-map-col{width:42%;flex-shrink:0;position:sticky;top:calc(var(--tabbar-h, 44px) + 10px)}
 .tab-list-col{flex:1;min-width:0}
+.links-list{max-width:700px}
 /* Overview map */
 .mv-filters{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
 .mv-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
@@ -172,6 +173,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   <button class="tab-btn" data-tab="sights" onclick="showTab('sights',this)"><i class="ti ti-binoculars"></i> Sights</button>
   <button class="tab-btn" data-tab="parking" onclick="showTab('parking',this)"><i class="ti ti-parking"></i> Parking</button>
   <button class="tab-btn" data-tab="shops" onclick="showTab('shops',this)"><i class="ti ti-shopping-bag"></i> Shops</button>
+  <button class="tab-btn" data-tab="links" onclick="showTab('links',this)"><i class="ti ti-link"></i> Links</button>
 </nav>
 
 <div id="mapview" class="pane on">
@@ -194,6 +196,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
           <li><span class="section-key">Clubs, Eat, Walks, Beaches, Sights:</span> the same places as this map, but as a full scrollable list with all the details, opening hours and tips.</li>
           <li><span class="section-key">Parking:</span> where to park near each area, and what it costs.</li>
           <li><span class="section-key">Shops:</span> the nearest supermarkets for a villa shop.</li>
+          <li><span class="section-key">Links:</span> handy external guides — not tied to a specific place, so not shown on the map.</li>
         </ul>
       </div>
     </div>
@@ -206,6 +209,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 <div id="sights" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="sights-map" class="tab-map"></div></div><div class="tab-list-col" id="sights-list"></div></div></div>
 <div id="parking" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="parking-map" class="tab-map"></div></div><div class="tab-list-col" id="parking-list"></div></div></div>
 <div id="shops" class="pane"><div class="tab-split"><div class="tab-map-col"><div id="shops-map" class="tab-map"></div></div><div class="tab-list-col" id="shops-list"></div></div></div>
+<div id="links" class="pane"><div class="tab-list-col links-list" id="links-list"></div></div>
 
 <script>
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -290,6 +294,10 @@ const PARKING=[
 {id:"p-puntagalera",lat:39.0095208,lng:1.2956091,ico:"ti-parking",col:"ico-cy",nm:"Punta Galera & Cala Salada",sub:"Near the villa — informal roadside parking",badge:null,pills:[{t:"Free",c:"free"},{t:"Informal roadside",c:"warn"},{t:"Road closed midday in season",c:"warn"}],desc:"No formal car park at Punta Galera itself — park along the road where others do and walk down. Cala Salada, just north, has a small proper car park.",sections:[{title:"Where to Park",items:[{key:"Punta Galera",val:"Informal roadside parking at the end of the road — park where you see a white wall marking the spot, then walk down to the rocks."},{key:"Cala Salada",val:"A small shaded car park with around 65 spaces."}]},{title:"If It's Full",items:[{key:"Access road closures (May-Oct)",val:"The Cala Salada road is closed to non-residents/non-diners 9:30am-5pm from around May to mid-October. Use the P7 minibus from Sant Antoni bus station, with park-and-ride at the Can Coix sports centre if driving."}]}],note:null,maps:"https://www.google.com/maps/search/Punta+Galera+Ibiza"},
 {id:"p-benirras",lat:39.0892175,lng:1.4537313,ico:"ti-parking",col:"ico-cy",nm:"Cala Benirràs",sub:"Drum circles & hippie market",badge:null,pills:[{t:"Free",c:"free"},{t:"Sun: shuttle bus only",c:"warn"},{t:"Other days: drive & park",c:"info"}],desc:"How you get there depends entirely on the day — Sunday driving is effectively impossible, while Monday, Tuesday, Friday and Saturday (market days without the drums) are a normal drive-and-park.",sections:[{title:"Where to Park",items:[{key:"Monday, Tuesday, Friday, Saturday",val:"Drive and park directly at the beach — free and straightforward."},{key:"Sunday",val:"Traffic is severe and driving is not realistic. Park at the Sant Joan car park and take the shuttle bus down to the beach instead."}]},{title:"If It's Full",items:[{key:"Arrive early",val:"Whichever day you go, arrive at least 45 minutes before sunset — both the beachside spaces and the Sant Joan car park (Sun) fill up as sunset approaches."}]},{title:"Payment",items:[{key:"Everywhere",val:"Free — including the Sunday shuttle bus."}]}],note:null,maps:"https://www.google.com/maps/search/Cala+Benirras+parking+Ibiza"},
 ];
+const LINKS=[
+{id:"lk-driving",ico:"ti-car",col:"ico-gy",nm:"Driving & Parking Tips",sub:"Ibiza Spotlight guide",badge:null,pills:[{t:"Read before you drive",c:"info"}],desc:"General background on driving and parking on the island — road rules, what to expect from local drivers, and where the tricky spots are — worth a read before renting a car.",sections:[{title:"Link",items:[{key:"Ibiza Spotlight — Driving & parking tips",val:"https://www.ibiza-spotlight.com/info/tips_transport_i.htm"}]}],note:null},
+{id:"lk-walking",ico:"ti-walk",col:"ico-gy",nm:"Walking Guides",sub:"Self-guided town walks & tours",badge:null,pills:[{t:"Self-guided tours",c:"info"}],desc:"Self-guided walking tour guides for exploring on foot — good for filling a spare hour in Ibiza Town beyond the routes already in the Walks tab.",sections:[{title:"Links",items:[{key:"GPSmyCity — Ibiza tour guides",val:"https://www.gpsmycity.com/gps-tour-guides/ibiza-4177.html"},{key:"Smart Guide — Ibiza Town in a Nutshell",val:"https://www.smart-guide.org/destinations/en/ibiza/?tour=Ibiza+Town+in+a+Nutshell"}]}],note:null}
+];
 
 // ── Expand/collapse ───────────────────────────────────────────────────────────
 
@@ -356,7 +364,7 @@ function readHash() {
   const hash = window.location.hash.slice(1);
   if (!hash || !hash.includes('/')) return;
   const [cat, id] = hash.split('/');
-  const TAB_MAP = {clubs:'clubs',eat:'eat',walks:'walks',beaches:'beaches',shops:'shops',sights:'sights',parking:'parking'};
+  const TAB_MAP = {clubs:'clubs',eat:'eat',walks:'walks',beaches:'beaches',shops:'shops',sights:'sights',parking:'parking',links:'links'};
   if (!TAB_MAP[cat]) return;
 
   // Switch tab only if needed
@@ -522,6 +530,12 @@ function renderParking() {
   let h = '';
   mustFirst(PARKING).forEach((r,i) => { h += renderCard(r, 'parking', '', i+1); });
   document.getElementById('parking-list').innerHTML = h;
+}
+
+function renderLinks() {
+  let h = '';
+  LINKS.forEach((r,i) => { h += renderCard(r, 'links', '', i+1); });
+  document.getElementById('links-list').innerHTML = h;
 }
 
 function renderBeaches() {
@@ -812,6 +826,7 @@ renderWalks();
 renderBeaches();
 renderShops();
 renderParking();
+renderLinks();
 renderSights('all');
 setTabbarHeight();
 window.addEventListener('resize', setTabbarHeight);
